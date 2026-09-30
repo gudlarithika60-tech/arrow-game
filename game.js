@@ -12,6 +12,7 @@ const player = {
 const arrows = [];
 const targets = [];
 let score = 0;
+let lives = 3;
 let gameOver = false;
 
 const keys = {
@@ -82,7 +83,10 @@ function updateTargets() {
 
     if (target.y > canvas.height + 30) {
       targets.splice(i, 1);
-      gameOver = true;
+      lives--;
+      if (lives <= 0) {
+        gameOver = true;
+      }
     }
   }
 }
@@ -153,10 +157,11 @@ function drawTargets() {
   });
 }
 
-function drawScore() {
+function drawUI() {
   ctx.fillStyle = "#111827";
   ctx.font = "24px Arial";
   ctx.fillText("Score: " + score, 20, 30);
+  ctx.fillText("Lives: " + lives, canvas.width - 180, 30);
 }
 
 function drawGameOver() {
@@ -167,7 +172,8 @@ function drawGameOver() {
   ctx.font = "42px Arial";
   ctx.fillText("Game Over", canvas.width / 2 - 120, canvas.height / 2);
   ctx.font = "24px Arial";
-  ctx.fillText("Press F5 to restart", canvas.width / 2 - 110, canvas.height / 2 + 40);
+  ctx.fillText("Final Score: " + score, canvas.width / 2 - 100, canvas.height / 2 + 50);
+  ctx.fillText("Press F5 to restart", canvas.width / 2 - 110, canvas.height / 2 + 90);
 }
 
 setInterval(createTarget, 900);
@@ -184,7 +190,7 @@ function loop() {
   drawPlayer();
   drawArrows();
   drawTargets();
-  drawScore();
+  drawUI();
   drawGameOver();
 
   requestAnimationFrame(loop);
